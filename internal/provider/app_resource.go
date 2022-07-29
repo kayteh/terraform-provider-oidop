@@ -304,5 +304,12 @@ func (r appResource) Delete(ctx context.Context, req tfsdk.DeleteResourceRequest
 }
 
 func (r appResource) ImportState(ctx context.Context, req tfsdk.ImportResourceStateRequest, resp *tfsdk.ImportResourceStateResponse) {
-	tfsdk.ResourceImportStatePassthroughID(ctx, tftypes.NewAttributePath().WithAttributeName("app_id"), req, resp)
+	app_id, err := strconv.Atoi(req.ID)
+
+	if err != nil {
+		resp.Diagnostics.AddError("Error parsing the passed app_id while importing the podio_app, please check your inputs to the import command", err.Error())
+		return
+	}
+
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, tftypes.NewAttributePath().WithAttributeName("app_id"), app_id)...)
 }
