@@ -19,6 +19,38 @@ This Terraform provider needs to:
 
 - [x] Workspace creation
 - [x] App creation
-- [ ] Template/Field creation (Text + Category)
+- [x] Template/Field creation (Text + Category)
 - [ ] Icon search picker
 - [ ] Item creation
+
+## Building and testing locally
+
+You need to have the Podio-Go SDK (https://github.com/kayteh/podio-go) cloned in the same directory as the directory you are housing this repo in. So your directory structure should look like:
+```
+some_folder/
+|- terraform-provider-podio/
+|- podio-go/
+| ...
+```
+
+### Build the Provider:
+
+On Windows:
+```
+go mod tidy
+go build -o podio-terraform-provider.exe
+```
+
+On Mac/Linux:
+```
+go mod tidy
+go build -o podio-terraform-provider
+```
+
+Please refer the section titled "Build the provider" on the following page for details about how to override Terraform's plugin lookup mechanism to make it load your provider binary upon `terraform init`: https://learn.hashicorp.com/tutorials/terraform/plugin-framework-create?in=terraform/providers#build-the-provider
+
+## Usage
+
+Please refer the provider docs at in the [docs/](./docs/) directory
+
+There are also some good examples in the [examples/](./examples/) directory

@@ -41,6 +41,43 @@ type providerData struct {
 	TrustLevel   types.Int64  `tfsdk:"trust_level"`
 }
 
+func (p *provider) GetSchema(ctx context.Context) (tfsdk.Schema, diag.Diagnostics) {
+	return tfsdk.Schema{
+		Attributes: map[string]tfsdk.Attribute{
+			"client_id": {
+				MarkdownDescription: "Client ID for Podio",
+				Type:                types.StringType,
+				Sensitive:           true,
+				Required:            true,
+			},
+			"client_secret": {
+				MarkdownDescription: "Client Secret for Podio",
+				Type:                types.StringType,
+				Sensitive:           true,
+				Required:            true,
+			},
+			"username": {
+				MarkdownDescription: "Username for Podio",
+				Type:                types.StringType,
+				Sensitive:           true,
+				Optional:            true,
+				Computed:            true,
+			},
+			"password": {
+				MarkdownDescription: "Password for Podio",
+				Type:                types.StringType,
+				Sensitive:           true,
+				Required:            true,
+			},
+			"trust_level": {
+				MarkdownDescription: "Trust level for Podio API key. Turns on guard-rails when your key can't be used for certain operations for lesser trust levels. `2` is the default, allowing all public API methods.",
+				Type:                types.Int64Type,
+				Optional:            true,
+			},
+		},
+	}, nil
+}
+
 func (p *provider) Configure(ctx context.Context, req tfsdk.ConfigureProviderRequest, resp *tfsdk.ConfigureProviderResponse) {
 	var data providerData
 	diags := req.Config.Get(ctx, &data)
@@ -87,43 +124,6 @@ func (p *provider) GetResources(ctx context.Context) (map[string]tfsdk.ResourceT
 func (p *provider) GetDataSources(ctx context.Context) (map[string]tfsdk.DataSourceType, diag.Diagnostics) {
 	return map[string]tfsdk.DataSourceType{
 		"podio_organization": organizationDataSourceType{},
-	}, nil
-}
-
-func (p *provider) GetSchema(ctx context.Context) (tfsdk.Schema, diag.Diagnostics) {
-	return tfsdk.Schema{
-		Attributes: map[string]tfsdk.Attribute{
-			"client_id": {
-				MarkdownDescription: "Client ID for Podio",
-				Type:                types.StringType,
-				Sensitive:           true,
-				Required:            true,
-			},
-			"client_secret": {
-				MarkdownDescription: "Client Secret for Podio",
-				Type:                types.StringType,
-				Sensitive:           true,
-				Required:            true,
-			},
-			"username": {
-				MarkdownDescription: "Username for Podio",
-				Type:                types.StringType,
-				Sensitive:           true,
-				Optional:            true,
-				Computed:            true,
-			},
-			"password": {
-				MarkdownDescription: "Password for Podio",
-				Type:                types.StringType,
-				Sensitive:           true,
-				Required:            true,
-			},
-			"trust_level": {
-				MarkdownDescription: "rust level for Podio API key. Turns on guard-rails when your key can't be used for certain operations for lesser trust levels. `2` is the default, allowing all public API methods.",
-				Type:                types.Int64Type,
-				Optional:            true,
-			},
-		},
 	}, nil
 }
 

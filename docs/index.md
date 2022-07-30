@@ -32,5 +32,5 @@ provider "podio" {
 
 ### Optional
 
-- `trust_level` (Number) rust level for Podio API key. Turns on guard-rails when your key can't be used for certain operations for lesser trust levels. `2` is the default, allowing all public API methods.
+- `trust_level` (Number) Trust level for Podio API key. Turns on guard-rails when your key can't be used for certain operations for lesser trust levels. `2` is the default, allowing all public API methods.
 - `username` (String, Sensitive) Username for Podio

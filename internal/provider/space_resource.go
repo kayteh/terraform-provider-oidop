@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
@@ -228,5 +229,12 @@ func (r spaceResource) Delete(ctx context.Context, req tfsdk.DeleteResourceReque
 }
 
 func (r spaceResource) ImportState(ctx context.Context, req tfsdk.ImportResourceStateRequest, resp *tfsdk.ImportResourceStateResponse) {
-	tfsdk.ResourceImportStatePassthroughID(ctx, tftypes.NewAttributePath().WithAttributeName("space_id"), req, resp)
+	space_id, err := strconv.Atoi(req.ID)
+
+	if err != nil {
+		resp.Diagnostics.AddError("Error parsing the passed space_id while importing space, please check your inputs to the import command", err.Error())
+		return
+	}
+
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, tftypes.NewAttributePath().WithAttributeName("space_id"), space_id)...)
 }
